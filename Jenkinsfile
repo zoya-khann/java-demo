@@ -2,8 +2,18 @@ pipeline {
     agent any
     stages {
         stage('Build') {
-            steps {
-                bat '"C:\\Users\\sameer\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" helloworld.py'
+            parallel {
+                stage('Build Stage') {
+                    steps {
+                        bat '"C:\\Users\\sameer\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" helloworld.py'
+                        bat 'echo "Build Version 1.0" > build-info.txt'
+                    }
+                }
+                stage('Archive the artifacts') {
+                    steps {
+                        archiveArtifacts artifacts: 'build-info.txt', allowEmptyArchive: true
+                    }
+                }
             }
         }
         stage('Test') {
@@ -18,7 +28,7 @@ pipeline {
         }
         stage('End') {
             steps {
-                bat 'echo "Pipeline Completed successfully"'
+                bat 'echo "Pipeline completed successfully"'
             }
         }
     }
