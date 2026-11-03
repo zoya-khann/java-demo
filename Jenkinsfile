@@ -16,5 +16,10 @@ pipeline {
                 bat 'echo "Deploying application..."'
             }
         }
+        stage('End') {
+            steps {
+                bat 'echo "Pipeline Completed successfully"'
+            }
+        }
     }
 }
